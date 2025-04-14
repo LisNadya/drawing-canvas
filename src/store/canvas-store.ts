@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ArtElement, ToolConfig } from "../models/canvas.model";
 import { Shape, Tool } from "../enum/canvas.enum";
+import { colorList } from "../const/canvas.const";
 
 type State = {
   canvasHistory: ArtElement[][];
@@ -22,7 +23,7 @@ export const useCanvasStore = create<State & Action>((set) => ({
   canvasObjects: [],
   toolConfig: {
     tool: null,
-    color: "#FFDAB3",
+    color: colorList[0],
     shape: Shape.SquareOutline,
   },
   handleToolClick: (value) =>

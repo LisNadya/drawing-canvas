@@ -1,7 +1,11 @@
 import "./ToolPanel.scss";
 import { Shape, Tool } from "../../enum/canvas.enum";
 import { useCanvasStore } from "../../store/canvas-store";
-import { shapeCodeLabel, toolCodeLabel } from "../../const/canvas.const";
+import {
+  colorList,
+  shapeCodeLabel,
+  toolCodeLabel,
+} from "../../const/canvas.const";
 import ToolIcon from "../ToolIcon/ToolIcon";
 import { Undo } from "lucide-react";
 import { JSX } from "react";
@@ -12,21 +16,6 @@ import { JSX } from "react";
 function ColorMenu(): JSX.Element {
   const { color } = useCanvasStore((state) => state.toolConfig);
   const handleColorClick = useCanvasStore((state) => state.handleColorClick);
-
-  const colorList = [
-    "#FFDAB3",
-    "#C8AAAA",
-    "#9F8383",
-    "#574964",
-    "#7C444F",
-    "#9F5255",
-    "#E16A54",
-    "#F39E60",
-    "#89A8B2",
-    "#B3C8CF",
-    "#E5E1DA",
-    "#F1F0E8",
-  ];
 
   return (
     <div className="section">
