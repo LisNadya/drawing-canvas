@@ -8,16 +8,15 @@ export class Circle extends CanvasObject {
   }
 
   draw(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.color;
-    context.strokeStyle = this.color;
-
     context.beginPath();
 
     context.arc(this.x, this.y, this.getRadius(), 0, Math.PI * 2);
 
     if (this.shape === Shape.CircleOutline) {
+      context.strokeStyle = this.color;
       context.stroke();
     } else {
+      context.fillStyle = this.color;
       context.fill();
     }
 
@@ -25,16 +24,6 @@ export class Circle extends CanvasObject {
   }
 
   private getRadius(): number {
-    const startX = this.x;
-    const startY = this.y;
-    const endX = this.x + this.width;
-    const endY = this.y + this.height;
-
-    const deltaX = startX - endX;
-    const deltaY = startY - endY;
-
-    const radius = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-    return radius;
+    return Math.sqrt(this.width * this.width + this.height * this.height);
   }
 }

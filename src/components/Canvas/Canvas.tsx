@@ -98,10 +98,9 @@ function Canvas(): JSX.Element {
 
     if (!canvasObj) return;
 
-    const x = event.clientX - canvasObj.left;
-    const y = event.clientY - canvasObj.top;
+    const coordinates = getCurrentCoordinate(event, canvasObj);
 
-    setCoordinates({ x, y });
+    setCoordinates(coordinates);
   }
 
   /**
@@ -150,15 +149,27 @@ function Canvas(): JSX.Element {
 
     if (!canvasObj || !context || !parent) return;
 
-    if (tool === Tool.Shape) {
-      drawShapeObject(event, context, canvasObj, saveState);
-      return;
-    }
+    const createObject = (): ArtElement | null => {
+      if (tool === Tool.Shape) {
+        return drawShapeObject(event, canvasObj);
+      }
 
-    if (tool === Tool.Pencil) {
-      drawFreeFormObject(event, context, canvasObj, saveState);
-      return;
-    }
+      if (tool === Tool.Pencil) {
+        return drawFreeFormObject(event, canvasObj);
+      }
+
+      return null;
+    };
+
+    const object = createObject();
+
+    if (!object) return;
+
+    rerenderDrawnShapes(context, canvasObj);
+
+    object.draw(context);
+
+    saveCanvasObject(object, saveState);
   }
 
   /**
@@ -193,38 +204,50 @@ function Canvas(): JSX.Element {
   }
 
   /**
+   * getCurrentCoordinate - gets current coordinates
+   */
+  function getCurrentCoordinate(
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+    canvasObj: DOMRect
+  ): Coordinate {
+    return {
+      x: event.clientX - canvasObj.left,
+      y: event.clientY - canvasObj.top,
+    };
+  }
+  /**
    * drawShapeObject - draws a new Shape object (Square/ Circle)
    */
   function drawShapeObject(
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-    context: CanvasRenderingContext2D,
-    canvasObj: DOMRect,
-    saveState: boolean
-  ): void {
-    if (!startCoordinate) return;
+    canvasObj: DOMRect
+  ): ArtElement | null {
+    if (!startCoordinate) return null;
 
-    const x = event.clientX - canvasObj.left;
-    const y = event.clientY - canvasObj.top;
+    const { x, y } = getCurrentCoordinate(event, canvasObj);
+
+    const startX = startCoordinate.x;
+    const startY = startCoordinate.y;
+
+    const endX = startX - (x - startX);
+    const endY = startY - (y - startY);
+
+    const deltaWidth = startX - endX;
+    const deltaHeight = startY - endY;
 
     const properties = {
-      x: startCoordinate.x,
-      y: startCoordinate.y,
-      width: Math.abs(x - startCoordinate.x),
-      height: Math.abs(y - startCoordinate.y),
+      x: startX,
+      y: startY,
+      width: deltaWidth,
+      height: deltaHeight,
       tool,
       shape,
       color,
     };
 
-    const object = [Shape.CircleFill, Shape.CircleOutline].includes(shape)
+    return [Shape.CircleFill, Shape.CircleOutline].includes(shape)
       ? new Circle(properties)
       : new Square(properties);
-
-    rerenderDrawnShapes(context, canvasObj);
-
-    object.draw(context);
-
-    saveCanvasObject(object, saveState);
   }
 
   /**
@@ -232,29 +255,20 @@ function Canvas(): JSX.Element {
    */
   function drawFreeFormObject(
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-    context: CanvasRenderingContext2D,
-    canvasObj: DOMRect,
-    saveState: boolean
-  ): void {
-    if (!pointCoordinates?.length) return;
+    canvasObj: DOMRect
+  ): ArtElement | null {
+    if (!pointCoordinates?.length) return null;
 
-    const x = event.clientX - canvasObj.left;
-    const y = event.clientY - canvasObj.top;
+    const coordinates = getCurrentCoordinate(event, canvasObj);
 
-    setPointCoordinates((prev) => [...prev, { x, y }]);
+    setPointCoordinates((prev) => [...prev, coordinates]);
 
-    const object = new Pencil({
+    return new Pencil({
       points: pointCoordinates,
       color,
       shape,
       tool,
     });
-
-    rerenderDrawnShapes(context, canvasObj);
-
-    object.draw(context);
-
-    saveCanvasObject(object, saveState);
   }
 
   return (

@@ -8,13 +8,14 @@ export class Square extends CanvasObject {
   }
 
   draw(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.color;
-    context.strokeStyle = this.color;
-
     if (this.shape === Shape.SquareFill) {
+      context.fillStyle = this.color;
       context.fillRect(this.x, this.y, this.width, this.height);
-    } else {
-      context.strokeRect(this.x, this.y, this.width, this.height);
+
+      return;
     }
+
+    context.strokeStyle = this.color;
+    context.strokeRect(this.x, this.y, this.width, this.height);
   }
 }

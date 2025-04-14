@@ -8,7 +8,7 @@ export class Pencil extends CanvasObject {
 
   draw(context: CanvasRenderingContext2D): void {
     if (this.points.length < 2) return;
-    context.fillStyle = this.color;
+
     context.strokeStyle = this.color;
     context.lineWidth = 2;
     context.lineCap = "round";
@@ -22,6 +22,7 @@ export class Pencil extends CanvasObject {
     }
 
     context.stroke();
+
     context.closePath();
   }
 }
