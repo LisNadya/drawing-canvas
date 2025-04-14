@@ -1,0 +1,18 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.canvas {
+  flex: 1;
+}
+
+.toolbar {
+  width: 280px;
+}
+
+.layerbar {
+  width: 250px;
+}

@@ -1,0 +1,38 @@
+@import "./variables";
+
+@mixin font-styling($weight, $size, $color) {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: $weight;
+  font-size: $size;
+  color: $color;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+p {
+  @include font-styling(400, 16px, $label-color);
+}
+
+h1,
+h2 {
+  @include font-styling(400, 18px, $header-color);
+}
+
+button {
+  background: none;
+  border: none;
+  width: fit-content;
+  padding: $button-padding;
+}
+
+button:hover {
+  background: $highlight-color;
+}

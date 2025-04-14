@@ -1,0 +1,83 @@
+@import "../../variables";
+
+.menu {
+  height: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: $primary-background-color;
+}
+
+.tool-menu {
+  grid-column: span 1;
+  padding: $panel-padding;
+  border-right: 1px solid $border-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  .option {
+    padding: $button-padding;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .selected {
+    background: $highlight-color;
+  }
+}
+
+.property-menu {
+  padding: 0 $panel-padding;
+  border-right: 1px solid $border-color;
+  grid-column: span 3;
+
+  display: flex;
+  flex-direction: column;
+
+  .section {
+    box-sizing: border-box;
+    padding: $panel-padding 0;
+    border-bottom: 1px solid $border-color;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.color-tool {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  .option {
+    box-sizing: border-box;
+    aspect-ratio: 1;
+  }
+
+  .selected {
+    outline: 2px solid $outline-color;
+  }
+}
+
+.shape-tool {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  .option {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .selected {
+    background: $highlight-color;
+  }
+}
